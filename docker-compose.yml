@@ -3,7 +3,7 @@ version: "3.8"
 services:
   mysqldb:
     image: mysql:5.7
-    restart: unless-stopped
+    restart: always
     env_file: ./.env
     environment:
       - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
@@ -12,6 +12,9 @@ services:
       - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
     volumes:
       - db:/var/lib/mysql
+    networks:
+      - mysql-compose-network
+
   app:
     build: .
     env_file: ./.env
@@ -29,6 +32,13 @@ services:
         }'
     stdin_open: true
     tty: true
+    networks:
+      - mysql-compose-network
 
 volumes:
   db:
+  
+networks:
+  mysql-compose-network:
+    driver: bridge
+    
