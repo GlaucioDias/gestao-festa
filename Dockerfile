@@ -1,7 +1,11 @@
-FROM maven:3.8.2-openjdk-11
+FROM eclipse-temurin:11-jdk-focal
 
 WORKDIR /gestao-festa
-COPY . .
-RUN mvn clean install
 
-CMD mvn spring-boot:run
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+ 
+COPY src ./src
+ 
+CMD ["./mvnw", "spring-boot:run"]
