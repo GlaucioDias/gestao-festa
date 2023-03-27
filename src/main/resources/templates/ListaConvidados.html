@@ -15,42 +15,35 @@
 			<h1 class="panel-title">Lista de convidados</h1>
 		</div>
 		<div class="panel-body">
-			<form 
-				class="form-inline" 
-				method="post" 
-				th:object="${convidado}"
-				th:action="@{/convidados}"
-				style="margin: 20px 0;"
-			>
+			<form class="form-inline" method="post" th:object="${convidado}" th:action="@{/convidados}"
+				style="margin: 20px 0;">
 				<div class="form-group">
-					<input 
-						type="text" 
-						class="form-control" 
-						th:field="*{nome}" 
-						placeholder="Nome" 
-					/>
-					<input 
-						type="text" 
-						class="form-control" 
-						th:field="*{quantidadeAcompanhantes}" 
-						placeholder="Acompanhantes" 
-					/>
+					<input type="text" class="form-control" th:field="*{nome}" placeholder="Nome" />
+					<input type="text" class="form-control" th:field="*{quantidadeAcompanhantes}"
+						placeholder="Acompanhantes" />
 					<button type="submit" class="btn btn-primary">Adicionar</button>
 				</div>
-				
+
 			</form>
-			
+
 			<table class="table">
 				<thead>
 					<tr>
 						<th>Nome</th>
 						<th>Acompanhantes</th>
+						<td></td>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="convidado : ${convidados}">
 						<td th:text="${convidado.nome}"></td>
 						<td th:text="${convidado.quantidadeAcompanhantes}"></td>
+						<td>
+							<form th:action="@{/convidado/excluir(id=${convidado.id})}" th:object="${convidado}" method="post">
+								<input type="hidden" th:field="${convidado}" />
+								<button type="submit" class="btn btn-danger">Remover</button>
+							</form>
+						</td>
 					</tr>
 				</tbody>
 			</table>
