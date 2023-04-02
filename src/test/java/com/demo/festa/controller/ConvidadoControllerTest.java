@@ -1,0 +1,59 @@
+package com.demo.festa.controller;
+
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.demo.festa.model.Convidado;
+import com.demo.festa.repository.Convidados;
+
+import io.restassured.http.ContentType;
+
+@WebMvcTest
+public class ConvidadoControllerTest {
+
+	@Autowired
+	private ConvidadoController convidadoController;
+
+	@MockBean
+	private Convidados convidados;
+
+	private Convidado convidado = new Convidado();
+
+	@BeforeEach
+	public void setup() {
+		standaloneSetup(this.convidadoController);
+
+		convidado.setId(0);
+		convidado.setNome("Paulo");
+		convidado.setQuantidadeAcompanhantes(1);
+	}
+
+	@Test
+	public void deveRetornarLista_QuandoFindAllForChamado() {
+		when(this.convidados.findAll()).thenReturn(List.of(convidado));
+		
+		List<Convidado> listaConvidados = this.convidados.findAll();
+		
+		assertEquals(List.of(convidado), listaConvidados);
+		verify(this.convidados).findAll();
+	}
+
+	@Test
+	public void deveRetornarSucesso_QuandoListarConvidados() {
+		ModelAndView modelAndView = new ModelAndView();
+		when(this.convidados.findAll()).thenReturn(List.of(convidado));
+
+		modelAndView.addObject("convidados", this.convidados.findAll());
+
+		given().accept(ContentType.URLENC).when().get("/convidados").then().statusCode(HttpStatus.OK.value());
+	}
+}
