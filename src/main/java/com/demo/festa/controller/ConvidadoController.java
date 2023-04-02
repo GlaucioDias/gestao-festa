@@ -1,5 +1,6 @@
 package com.demo.festa.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,15 +14,16 @@ import com.demo.festa.repository.Convidados;
 
 @Controller
 @RequestMapping("/")
-public class ConvidadosController {
+public class ConvidadoController {
 
 	@Autowired
 	private Convidados convidados;
 
 	@RequestMapping(value = { "/", "/convidados" }, method = RequestMethod.GET)
 	public ModelAndView listar() {
+		List<Convidado> listaConvidados = this.convidados.findAll();
 		ModelAndView modelAndView = new ModelAndView("ListaConvidados");
-		modelAndView.addObject("convidados", convidados.findAll());		
+		modelAndView.addObject("convidados", listaConvidados);		
 		modelAndView.addObject(new Convidado());
 		return modelAndView;
 	}
