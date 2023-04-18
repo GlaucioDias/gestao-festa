@@ -25,6 +25,11 @@
 				</div>
 
 			</form>
+			
+			<div th:if="${message}" class="alert alert-success alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<p th:text="${message}">success message</p>
+			</div>
 
 			<table class="table">
 				<thead>
@@ -39,7 +44,8 @@
 						<td th:text="${convidado.nome}"></td>
 						<td th:text="${convidado.quantidadeAcompanhantes}"></td>
 						<td>
-							<form th:action="@{/convidado/excluir(id=${convidado.id})}" th:object="${convidado}" method="post">
+							<form th:action="@{'/convidados/' + (${convidado.id}) + '/remover'}" th:object="${convidado}"
+								method="post">
 								<input type="hidden" th:field="${convidado}" />
 								<button type="submit" class="btn btn-danger">Remover</button>
 							</form>
