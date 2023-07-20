@@ -3,6 +3,18 @@ version: "3.8"
 services:
   mysqldb:
     image: mysql:5.7
+#    mem_limit: "200m"
+#    mem_reservation: "50m"
+#    cpus: "0.1"
+#    cpuset: "2"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 200M
+        reservations:
+          cpus: '0.1'
+          memory: 50M
     restart: always
     env_file: ./.env
     environment:
@@ -17,6 +29,18 @@ services:
 
   app:
     build: .
+#    mem_limit: "150m"
+#    mem_reservation: "50m"
+#    cpus: "1"
+#    cpuset: "2"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 200M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
     env_file: ./.env
     ports:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
